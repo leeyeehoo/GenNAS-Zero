@@ -11,12 +11,12 @@ class HeadNB101(nn.Module):
             self.last_output = 2
         else:
             self.last_output = 1
-        self.model = nn.Sequential(\
-            nn.BatchNorm2d(head_config.out_channel),\
-                nn.Conv2d(head_config.out_channel,\
-                    head_config.last_channel * self.last_output,1))
+        self.model = nn.Sequential(nn.BatchNorm2d(head_config.out_channel),\
+                                  nn.Conv2d(head_config.out_channel,head_config.last_channel * self.last_output,3,padding=1))
     def forward(self, x):
         x = self.model(x)
         if self.loss_type == 'celoss':
             x = rearrange(x, 'b (d c) h w -> b d c h w', d = self.last_output)
         return x
+
+        
