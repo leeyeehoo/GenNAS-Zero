@@ -6,6 +6,7 @@ This repository is the official implementation of Generic Neural Architecture Se
 
 - [x] NASBench-101
 - [x] Training
+- [ ] requirement.txt
 - [ ] Exploration
 - [ ] NASBench-201
 - [x] NDS
