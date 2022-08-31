@@ -37,6 +37,7 @@ MANIFEST
 log
 data/dataset
 data/saved_models
+data/download_data
 run*
 # Installer logs
 pip-log.txt
