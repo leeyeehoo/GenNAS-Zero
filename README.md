@@ -5,10 +5,10 @@ This repository is the official implementation of Generic Neural Architecture Se
 ## Todo
 
 - [x] NASBench-101
-- [ ] Training
+- [x] Training
 - [ ] Exploration
 - [ ] NASBench-201
-- [ ] NDS
+- [x] NDS
 - [ ] TransNASBench-Micro
 - [ ] NASBench-MB
 

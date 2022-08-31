@@ -25,7 +25,7 @@ class SiamGeneratorWS(nn.Module):
         self.relu = nn.ReLU()
         self.maxpooling = nn.MaxPool2d(2,2)
         self.avgpooling = nn.AdaptiveAvgPool2d(1)
-
+        self.fc = nn.Linear(64,10)
         self.another_branch = nn.Sequential(nn.BatchNorm2d(head_config.out_channel),\
                                   nn.Conv2d(head_config.out_channel,head_config.last_channel * self.last_output,3,padding=1)
                     )

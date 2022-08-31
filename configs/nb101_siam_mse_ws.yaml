@@ -14,14 +14,15 @@ head_config:
 
 generator_config:
   model: 'SiamGenerator'
-
+  # load_from_save: 'data/saved_models/ckpt.pth'
+  # state_dict_name: 'net'
 arch_config:
   train_archs_accs: './data/nb101/nasbench1_20.json'
   eval_archs_accs: './data/nb101/nasbench1_2500.json'
 
 dataset_config:
   batch_size: 16
-
+  
 optim_g_config:
   optim: 'sgd'
   lr: 1.0e-3

@@ -36,7 +36,8 @@ MANIFEST
 # My Ignore
 log
 data/dataset
-
+data/saved_models
+run*
 # Installer logs
 pip-log.txt
 pip-delete-this-directory.txt

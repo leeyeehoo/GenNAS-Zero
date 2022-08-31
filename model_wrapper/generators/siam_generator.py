@@ -26,7 +26,7 @@ class SiamGenerator(nn.Module):
         self.relu = nn.ReLU()
         self.maxpooling = nn.MaxPool2d(2,2)
         self.avgpooling = nn.AdaptiveAvgPool2d(1)
-
+        self.ff = nn.Linear(1024, 10)
         self.another_branch = nn.Sequential(nn.BatchNorm2d(head_config.out_channel),\
                                   nn.Conv2d(head_config.out_channel,head_config.last_channel * self.last_output,3,padding=1)
                     )
@@ -40,7 +40,7 @@ class SiamGenerator(nn.Module):
         x = self.relu(self.bn4(self.conv4(x)))
         x = self.relu(self.bn5(self.conv5(x)))
 
-        x = self.conv6(x) + self.random_noise
+        x = self.conv6(x) #+ self.random_noise
 
         return x
     def forward_another_branch(self,x):
