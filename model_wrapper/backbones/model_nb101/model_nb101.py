@@ -48,7 +48,7 @@ class Network(nn.Module):
 
         self.classifier = nn.Linear(out_channels, num_labels)
 
-        self._initialize_weights()
+        # self._initialize_weights()
 
     def forward(self, x):
         for _, layer in enumerate(self.layers):

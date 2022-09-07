@@ -82,6 +82,16 @@ def block(index, inplane):
         return TinyResBlock(inplane, 5)
     elif index == 6:
         return TinyResBlock(inplane, 7)
+    elif index == 7:
+        return nn.Sequential(
+                                  nn.Conv2d(inplane,inplane,1,padding=0),
+                                  nn.ReLU(),\
+                                    nn.BatchNorm2d(inplane))
+    elif index == 8:
+        return nn.Sequential(
+                                  nn.Conv2d(inplane,inplane,3,padding=1),
+                                  nn.ReLU(),\
+                                    nn.BatchNorm2d(inplane))
     else:
         raise NotImplementedError
 

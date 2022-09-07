@@ -362,7 +362,7 @@ class AnyNet(nn.Module):
         kwargs = self.get_args() if not kwargs else kwargs
         #print(kwargs)
         self._construct(**kwargs)
-        self.apply(net.init_weights)
+        # self.apply(net.init_weights)
 
     def _construct(self, stem_type, stem_w, block_type, ds, ws, ss, bms, gws, se_r, nc):
         # Generate dummy bot muls and gs for models that do not use them

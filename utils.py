@@ -5,7 +5,29 @@ import torchvision
 import torchvision.transforms as transforms
 import os
 import shutil
+import numpy as np
+import matplotlib.pyplot as plt
 
+# https://github.com/BVLC/caffe/blob/master/examples/00-classification.ipynb
+def vis_square(data):
+    """Take an array of shape (n, height, width) or (n, height, width, 3)
+       and visualize each (height, width) thing in a grid of size approx. sqrt(n) by sqrt(n)"""
+    
+    # normalize data for display
+    data = (data - data.min()) / (data.max() - data.min())
+    
+    # force the number of filters to be square
+    n = int(np.ceil(np.sqrt(data.shape[0])))
+    padding = (((0, n ** 2 - data.shape[0]),
+               (0, 1), (0, 1))                 # add some space between filters
+               + ((0, 0),) * (data.ndim - 3))  # don't pad the last dimension (if there is one)
+    data = np.pad(data, padding, mode='constant', constant_values=1)  # pad with ones (white)
+    
+    # tile the filters into an image
+    data = data.reshape((n, n) + data.shape[1:]).transpose((0, 2, 1, 3) + tuple(range(4, data.ndim + 1)))
+    data = data.reshape((n * data.shape[1], n * data.shape[3]) + data.shape[4:])
+    
+    plt.imshow(data); plt.axis('off')
 
 def load_one_batch_image(dataset_config = None):
   batch_size = dataset_config.batch_size
@@ -66,52 +88,99 @@ def get_parameters(model):
     return groups
 
 
-def init_net(net, w_type, b_type):
-    if w_type == 'none':
-        pass
-    elif w_type == 'xavier':
-        net.apply(init_weights_vs)
-    elif w_type == 'kaiming':
-        net.apply(init_weights_he)
-    elif w_type == 'zero':
-        net.apply(init_weights_zero)
+def init_net(net, w_type):
+    if w_type == 'xavier_uniform':
+        net.apply(init_weights_xavier_uniform)
+    elif w_type == 'xavier_normal':
+        net.apply(init_weights_xavier_normal)
+    elif w_type == 'kaiming_uniform':
+        net.apply(init_weights_kaiming_uniform)
+    elif w_type == 'kaiming_normal':
+        net.apply(init_weights_kaiming_normal)
+    
     else:
         raise NotImplementedError(f'init_type={w_type} is not supported.')
 
-    if b_type == 'none':
-        pass
-    elif b_type == 'xavier':
-        net.apply(init_bias_vs)
-    elif b_type == 'kaiming':
-        net.apply(init_bias_he)
-    elif b_type == 'zero':
-        net.apply(init_bias_zero)
-    else:
-        raise NotImplementedError(f'init_type={b_type} is not supported.')
 
-def init_weights_vs(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+def init_weights_xavier_uniform(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+        nn.init.xavier_uniform_(m.weight)
+        if m.bias is not None:
+            nn.init.constant_(m.bias, 0.01)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.constant_(m.weight, 1)
+        nn.init.constant_(m.bias, 0)
+
+def init_weights_xavier_normal(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
         nn.init.xavier_normal_(m.weight)
-
-def init_bias_vs(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
         if m.bias is not None:
-            nn.init.xavier_normal_(m.bias)
+            nn.init.constant_(m.bias, 0.01)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.constant_(m.weight, 1)
+        nn.init.constant_(m.bias, 0)
 
-def init_weights_he(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
-        nn.init.kaiming_normal_(m.weight)
-
-def init_bias_he(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+def init_weights_kaiming_uniform(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+        nn.init.kaiming_uniform_(m.weight, mode='fan_out', nonlinearity='relu')
         if m.bias is not None:
-            nn.init.kaiming_normal_(m.bias)
+            nn.init.constant_(m.bias, 0)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.constant_(m.weight, 1)
+        nn.init.constant_(m.bias, 0)
 
-def init_weights_zero(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
-        m.weight.data.fill_(.0)
-
-def init_bias_zero(m):
-    if type(m) == nn.Linear or type(m) == nn.Conv2d:
+def init_weights_kaiming_normal(m):
+    if isinstance(m, nn.Conv2d) or isinstance(m, nn.Linear):
+        nn.init.kaiming_normal_(m.weight, mode='fan_out', nonlinearity='relu')
         if m.bias is not None:
-            m.bias.data.fill_(.0)
+            nn.init.constant_(m.bias, 0)
+    elif isinstance(m, nn.BatchNorm2d):
+        nn.init.constant_(m.weight, 1)
+        nn.init.constant_(m.bias, 0)
+
+
+def get_macs_lut(search_space):
+    lut = {'nb101': 7218069504.0,\
+        'nb101imgnet': 7218069504,\
+        'nb201': 187166720,\
+        'nb201c100': 187166720,\
+        'nb201tinyimg': 187166720,\
+        'amoeba': 1853440000,\
+        'amoebain': 877355008,\
+        'darts': 515047424,\
+        'dartsfixwd': 178651136,\
+        'dartsfixwdin': 584392704,\
+        'dartsin': 912556032,\
+        'enas': 600064000,\
+        'enasfixwd': 233881600,\
+        'enasin': 842526720,\
+        'nasnet': 1458520064,\
+        'nasnetin': 908869632,\
+        'ncp_3ddet': 12419122944,\
+        'ncp_cls-10-1000': 13727907840,\
+        'ncp_cls-10c': 13727907840,\
+        'ncp_cls-50-100': 13727907840,\
+        'ncp_cls-50-1000': 13727907840,\
+        'ncp_seg': 13727907840,\
+        'ncp_seg-4x': 13727907840,\
+        'ncp_video': 13727907840,\
+        'ncp_video-p': 13727907840,\
+        'pnas': 1622589440,\
+        'pnasfixwd': 540258304,\
+        'pnasin': 898228224,\
+        'resnet': 896475136,\
+        'resnexta': 611136512,\
+        'resnextain': 1226891264,\
+        'resnextb': 898228224,\
+        'resnextbin': 2751660032,\
+        'transmicroautoencoder': 1505384448,\
+        'transmicroclassobject': 1505384448,\
+        'transmicroclassscene': 1505384448,\
+        'transmicrojigsaw': 1505384448,\
+        'transmicronormal': 1505384448, \
+        'transmicroroomlayout': 1505384448, \
+        'transmicrosegmentsemantic': 1505384448
+        }
+    if search_space not in lut:
+        raise NotImplementedError
+    return lut[search_space]

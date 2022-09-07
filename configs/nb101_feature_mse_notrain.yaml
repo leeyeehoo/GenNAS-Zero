@@ -10,7 +10,7 @@ head_config:
   model: 'HeadNB101'
   loss_type: 'mseloss'
   out_channel: 512
-  last_channel: 32
+  last_channel: 128
   batch_size: 16
   width: 8
   height: 8
@@ -31,7 +31,7 @@ optim_g_config:
   weight_decay: 0.00004
 
 optim_a_config:
-  optim: 'sgd'
+  optim: 'adam'
   lr: 1.0e-3
   momentum: 0.9
   weight_decay: 0.00004

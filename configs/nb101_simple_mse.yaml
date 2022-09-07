@@ -10,7 +10,7 @@ head_config:
   model: 'HeadNB1012L'
   loss_type: 'mseloss'
   out_channel: 512
-  last_channel: 64
+  last_channel: 256
 
 generator_config:
   model: 'SimpleGenerator'
@@ -30,14 +30,14 @@ optim_g_config:
 
 optim_a_config:
   optim: 'sgd'
-  lr: 1.0
+  lr: 1.0e-1
   momentum: 0.9
   weight_decay: 0.00004
 
 train_config:
   total_pairs: 200
   g_iters: 10
-  a_iters: 10
+  a_iters: 100
   eval_interval: 10
   eval_show_metric_interval: 20
   rank_metric: 'spearmanr'

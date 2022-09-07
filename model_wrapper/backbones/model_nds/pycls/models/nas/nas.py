@@ -45,7 +45,7 @@ class Cell(nn.Module):
 
     def __init__(self, genotype, C_prev_prev, C_prev, C, reduction, reduction_prev):
         super(Cell, self).__init__()
-        logger.info('{}, {}, {}'.format(C_prev_prev, C_prev, C))
+        # logger.info('{}, {}, {}'.format(C_prev_prev, C_prev, C))
 
         if reduction_prev:
             self.preprocess0 = FactorizedReduce(C_prev_prev, C)
@@ -265,7 +265,7 @@ class NAS(nn.Module):
         assert cfg.NAS.GENOTYPE in GENOTYPES, \
             'Genotype {} not supported'.format(cfg.NAS.GENOTYPE)
         super(NAS, self).__init__()
-        logger.info('Constructing NAS: {}'.format(cfg.NAS))
+        # logger.info('Constructing NAS: {}'.format(cfg.NAS))
         # Use a custom or predefined genotype
         if cfg.NAS.GENOTYPE == 'custom':
             genotype = Genotype(

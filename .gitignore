@@ -35,9 +35,11 @@ MANIFEST
 
 # My Ignore
 log
+logbp1
 data/dataset
 data/saved_models
 data/download_data
+data/features
 run*
 # Installer logs
 pip-log.txt

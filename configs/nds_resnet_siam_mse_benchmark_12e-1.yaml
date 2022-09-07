@@ -15,8 +15,8 @@ backbone_config:
 head_config:
   model: 'HeadEmptyMidNDS'
   loss_type: 'mseloss'
-  out_channel: 512
-  last_channel: 128
+  out_channel: 256
+  last_channel: 256
 
 generator_config:
   model: 'SiamGenerator'
@@ -49,6 +49,7 @@ train_config:
   eval_show_metric_interval: 20
   rank_metric: 'spearmanr'
   rank_reverse: True
-  max_eval_sample: 1000
+  # max_eval_sample: 1000
   train_sample: 20
+  init_net: ['kaiming', 'kaiming']
 

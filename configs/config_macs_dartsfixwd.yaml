@@ -1,0 +1,58 @@
+backbone_config:
+  model: 'BackboneNDS'
+  spec: None
+  stem_out_channels: 128
+  num_stacks: 3
+  num_modules_per_stack: 3
+  num_labels: 10
+  NDS: None
+  arch: None
+  search_space: 'DARTS_fix-w-d'
+  datapath: './data/download_data/nds_data/'
+head_config:
+  model: 'HeadEmptyMid'
+  loss_type: 'mseloss'
+  out_channel: [512]
+  last_channel: [32]
+  batch_size: 16
+  width: 8
+  height: 8
+
+barrier_config:
+  model: 'SimpleBarrier'
+
+generator_config:
+  model: 'SiamGenerator'
+  # load_from_save: 'data/saved_models/ckpt.pth'
+  # state_dict_name: 'net'
+arch_config:
+  train_archs_accs: './data/nb101/nasbench1_20.json'
+  eval_archs_accs: './data/nb101/nasbench1_2500.json'
+
+dataset_config:
+  batch_size: 16
+  
+optim_g_config:
+  optim: 'sgd'
+  lr: 1.0e-3
+  momentum: 0.9
+  weight_decay: 0.00004
+
+optim_a_config:
+  optim: 'sgd'
+  lr: 1.2
+  momentum: 0.9
+  weight_decay: 0.00004
+
+train_config:
+  total_pairs: 200
+  g_iters: 10
+  a_iters: 10
+  eval_interval: 10
+  eval_show_metric_interval: 20
+  rank_metric: 'spearmanr'
+  rank_reverse: True
+  init_net: ['kaiming', 'kaiming']
+  mac_mode: 'macs'
+  max_eval_sample: 2500
+  train_sample: 20
