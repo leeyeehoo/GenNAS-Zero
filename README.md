@@ -13,6 +13,12 @@ This repository is the official implementation of Generic Neural Architecture Se
 - [x] TransNASBench-Micro
 - [x] NASBench-MB
 
+## Start a Simple Zero Cost Proxy Sarch
+
+    
+    bash requirement.sh
+    conda activate gennaszero
+    python do_train.py --config=config_loss_macs_nb101_nas
 
 
 ## References
