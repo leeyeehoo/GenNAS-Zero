@@ -154,30 +154,30 @@ class Explorer():
         total_barrier_ops = len(self.config.nas_config.network.barrier_indexes)
         total_channel = len(self.config.nas_config.network.channels)
         total_level = len(config.nas_config.levels)
-        if random.random() > self.mutate_ratio:
+        if random.random() > 1 - self.mutate_ratio:
             new_config_dict['lr'] = random.choice(self.config.nas_config.lrs)
-        if random.random() > self.mutate_ratio:
+        if random.random() > 1 - self.mutate_ratio:
             new_config_dict['alpha'] = random.choice(self.config.nas_config.alphas)
-        if random.random() > self.mutate_ratio:
+        if random.random() > 1 - self.mutate_ratio:
             new_config_dict['init_net'] = random.choice(config.nas_config.cnn_inits)
-        if random.random() > self.mutate_ratio:
+        if random.random() > 1 - self.mutate_ratio:
             new_config_dict['init_barrier'] = random.choice(config.nas_config.barrier_inits)
-        if random.random() > self.mutate_ratio:
+        if random.random() > 1 - self.mutate_ratio:
             new_config_dict['branch_number'] = random.choice(self.config.nas_config.network.branch_number)
         for i in range(total_branch_number):
             for j in range(total_features):
-                if random.random() > self.mutate_ratio:
+                if random.random() > 1 - self.mutate_ratio:
                     new_config_dict['feature_indx'][i][j] = 1 - new_config_dict['feature_indx'][i][j]
         for i in range(total_branch_number):
-            if random.random() > self.mutate_ratio:
+            if random.random() > 1 - self.mutate_ratio:
                 new_config_dict['head_indx'][i] = int(random.random() * total_head_ops)
-            if random.random() > self.mutate_ratio:
+            if random.random() > 1 - self.mutate_ratio:
                 new_config_dict['barrier_indx'][i] = int(random.random() * total_barrier_ops)
-            if  random.random() > self.mutate_ratio:
+            if  random.random() > 1 - self.mutate_ratio:
                 new_config_dict['out_channel_indx'][i] = int(random.random() * total_channel)
-            if  random.random() > self.mutate_ratio:
+            if  random.random() > 1 - self.mutate_ratio:
                 new_config_dict['last_channel_indx'][i] = int(random.random() * total_channel)
-            if  random.random() > self.mutate_ratio:
+            if  random.random() > 1 - self.mutate_ratio:
                 new_config_dict['level_indx'][i] = int(random.random() * total_level)
         return new_config_dict
 
@@ -449,7 +449,7 @@ if __name__ == '__main__':
             config_dicts_ranks.append([config_dict, rank])
             logging.info(f'pair: {pair}, nas config: {config_dict}, rank: {rank}')
         set_nas_config(config, config_dicts_ranks[best_pair][0])
-        np.save(os.path.join(args.save, 'loss_matrix.npy'), config_dicts_ranks)
+        np.save(os.path.join(args.save, 'config_dicts_ranks.npy'), config_dicts_ranks)
         generator = model_dict.GENERATOR_CONFIGS[config.generator_config.model](config.head_config).to(args.device)
         try:
             generator.load_state_dict(torch.load(os.path.join(args.save, 'generator.pth')))

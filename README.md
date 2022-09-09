@@ -12,7 +12,7 @@ This repository is the official implementation of Generic Neural Architecture Se
 - [x] NDS
 - [x] TransNASBench-Micro
 - [x] NASBench-MB
-
+- [ ] Preprocessing data
 ## Start a Simple Zero Cost Proxy Sarch
 
     

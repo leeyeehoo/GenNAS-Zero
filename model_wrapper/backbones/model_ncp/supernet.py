@@ -544,7 +544,7 @@ class MultiResolutionNet(nn.Module):
         upsampled_inputs = [
             resize(
                 input=x,
-                size=inputs[0].shape[2:] if self.task == 'segmentation' else inputs[-1].shape[2:],
+                size=inputs[0].shape[2:] if self.task == 'segmentation' else inputs[-2].shape[2:],
                 mode='bilinear',
                 align_corners=self.align_corners) for x in inputs
         ]

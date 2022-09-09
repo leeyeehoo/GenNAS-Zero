@@ -27,7 +27,7 @@ arch_config:
   eval_archs_accs: './data/ncp/3ddet.json'
 
 dataset_config:
-  batch_size: 16
+  batch_size: 1
   
 optim_g_config:
   optim: 'sgd'

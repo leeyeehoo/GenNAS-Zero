@@ -20,8 +20,7 @@ head_config:
   index: [1,1,1]
   barrier_index: [1,1,1]
   levels: 1.0
-  cnn_inits: ['xavier_uniform', 'xavier_normal', 'kaiming_uniform', 'kaiming_normal']
-  barrier_inits: ['xavier_uniform', 'xavier_normal', 'kaiming_uniform', 'kaiming_normal']
+
 nas_config:
   lrs: [0.5, 0.6, 0.7, 0.8, 0.9, 1.0, 1.1, 1.2, 1.3, 1.4, 1.5]
   alphas: [-0.5, -0.4, -0.3, -0.2, -0.1, 0, 0.1, 0.2, 0.3, 0.4, 0.5]
@@ -32,7 +31,8 @@ nas_config:
     channels: [16, 32, 64, 128, 256, 512]
   features: ['net', 'wave_l', 'wave_m', 'wave_h', 'dot']
   levels: [0.5, 1, 1.5, 2]
-
+  cnn_inits: ['xavier_uniform', 'xavier_normal', 'kaiming_uniform', 'kaiming_normal']
+  barrier_inits: ['xavier_uniform', 'xavier_normal', 'kaiming_uniform', 'kaiming_normal']
 ea_config:
   mutate_ratio: 0.2
   p_size: 40
