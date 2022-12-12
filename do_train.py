@@ -19,7 +19,7 @@ import json
 from scipy import stats
 from model_wrapper import model_dict
 from model_wrapper.cnn_wrapper import CNNWrapper
-from model_wrapper.backbones.model_nds.pycls.models.nas.fbnas import NDS
+from model_wrapper.backbones.model_nds.fbnas import NDS
 import copy
 from ptflops import get_model_complexity_info
 
