@@ -298,7 +298,7 @@ def evaluation(archs_accs, config, data, generator, device):
             losses = []
             optimizer = get_optimizer(config.optim_a_config, model)
 
-            for a_iter in range(config.train_config.a_iters):
+            for a_iter in range(config.train_config.a_iters): #100 or 10
                 
                 output_m_cache = model(data)
                 if 'HeadEmpty' in config.head_config.model:
