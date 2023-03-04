@@ -13,6 +13,13 @@ This repository is the official implementation of Generic Neural Architecture Se
 - [x] TransNASBench-Micro
 - [x] NASBench-MB
 - [ ] Preprocessing data
+- [ ] ReadMe
+- [x] Standalone Instruction
+
+## Standalone Instruction
+
+Please run `notebooks/standalone.ipynb`
+
 ## Start a Simple Zero Cost Proxy Sarch
 
     
